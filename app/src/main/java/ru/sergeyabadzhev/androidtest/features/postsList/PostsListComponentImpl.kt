@@ -16,7 +16,7 @@ import ru.sergeyabadzhev.androidtest.domain.models.Post
 class PostsListComponentImpl(
     componentContext: ComponentContext,
     private val onShowSinglePost: (Post) -> Unit,
-    private val postsRepository: PostsRepository = KoinPlatform.getKoin().get<PostsRepository>(),
+    private val postsRepository: PostsRepository,
 ): PostsListComponent, ComponentContext by componentContext {
 
     private val _state = MutableValue(PostsListState())

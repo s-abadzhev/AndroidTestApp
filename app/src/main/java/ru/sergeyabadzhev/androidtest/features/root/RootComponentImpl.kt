@@ -8,6 +8,8 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
+import org.koin.mp.KoinPlatform
+import ru.sergeyabadzhev.androidtest.data.repository.posts.PostsRepository
 import ru.sergeyabadzhev.androidtest.domain.models.Post
 import ru.sergeyabadzhev.androidtest.features.postsList.PostsListComponent
 import ru.sergeyabadzhev.androidtest.features.postsList.PostsListComponentImpl
@@ -17,6 +19,7 @@ import ru.sergeyabadzhev.androidtest.features.singlePost.SinglePostComponentImpl
 
 class RootComponentImpl(
     componentContext: ComponentContext,
+    private val postsRepository: PostsRepository,
 ): RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -32,14 +35,15 @@ class RootComponentImpl(
 
     private fun child(config: Config, childComponentContext: ComponentContext): Child =
         when(config) {
-            is Config.PostsList -> RootComponent.Child.PostsList(postsListComponent(childComponentContext))
-            is Config.SinglePost -> RootComponent.Child.SinglePost(singlePostComponent(childComponentContext, config.post))
+            is Config.PostsList -> Child.PostsList(postsListComponent(childComponentContext))
+            is Config.SinglePost -> Child.SinglePost(singlePostComponent(childComponentContext, config.post))
         }
 
     private fun postsListComponent(componentContext: ComponentContext): PostsListComponent =
         PostsListComponentImpl(
             componentContext = componentContext,
             onShowSinglePost = { post -> navigation.pushNew(Config.SinglePost(post)) },
+            postsRepository = postsRepository
         )
 
     private fun singlePostComponent(componentContext: ComponentContext, post: Post): SinglePostComponent =
