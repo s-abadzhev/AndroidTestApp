@@ -1,14 +1,24 @@
 package ru.sergeyabadzhev.androidtest.data.sources.network
 
-const val BASE_URL = "https://jsonplaceholder.typicode.com"
-sealed class ApiEndpoint {
-    object PostsList : ApiEndpoint()
+import kotlinx.serialization.Serializable
 
-    val url: String
-        get() = when (this) {
-            is PostsList -> buildString {
-                append(BASE_URL)
-                append("/posts")
-            }
-        }
+const val BASE_URL = "https://jsonplaceholder.typicode.com"
+
+enum class Method {
+    GET,
+    POST,
+    PUT,
+    DELETE
+}
+
+sealed class ApiEndpoint {
+    abstract val url: String
+    abstract val methodType: Method
+    abstract val body: @Serializable Any?
+    object GetPostsList : ApiEndpoint() {
+        override val url = "$BASE_URL/posts"
+        override val methodType = Method.GET
+        override val body = null
+    }
+
 }
