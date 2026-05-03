@@ -20,8 +20,7 @@ sqlite = "2.6.2"
 ksp = "2.3.6"
 decompose = "3.5.0"
 compose-materialIcons = "1.7.3"
-appcompat = "1.7.1"
-material = "1.10.0"
+essenty = "2.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,8 +59,8 @@ decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decom
 decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 decompose-jetpack-component-context = { module = "com.arkivanov.decompose:jetpack-component-context", version.ref = "decompose" }
 compose-material-iconsCore = { group = "org.jetbrains.compose.material", name = "material-icons-core", version.ref = "compose-materialIcons" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenty" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

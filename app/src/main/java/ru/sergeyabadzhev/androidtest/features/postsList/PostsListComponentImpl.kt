@@ -3,11 +3,10 @@ package ru.sergeyabadzhev.androidtest.features.postsList
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import kotlinx.coroutines.CoroutineScope
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform
 import ru.sergeyabadzhev.androidtest.core.network.NetworkError
 import ru.sergeyabadzhev.androidtest.data.repository.posts.PostsRepository
 import ru.sergeyabadzhev.androidtest.domain.models.Post
@@ -23,7 +22,7 @@ class PostsListComponentImpl(
     override val state = _state
     private var updateJob: Job? = null
 
-    private val coroutineScope = CoroutineScope(Job() + Dispatchers.Main.immediate)
+    private val coroutineScope = coroutineScope(Dispatchers.Main.immediate)
 
     init {
         coroutineScope.launch {

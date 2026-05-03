@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.decompose.extensions)
     implementation(libs.decompose.jetpack.component.context)
     implementation(libs.compose.material.iconsCore)
+    implementation(libs.essenty.lifecycle)
+    implementation(libs.essenty.lifecycle.coroutines)
     ksp(libs.androidx.room.compiler)
 }
 
