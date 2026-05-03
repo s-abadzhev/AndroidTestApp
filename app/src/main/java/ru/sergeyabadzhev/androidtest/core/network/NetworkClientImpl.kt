@@ -9,12 +9,13 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.reflect.TypeInfo
 import io.ktor.utils.io.CancellationException
 import kotlinx.serialization.json.Json
 import ru.sergeyabadzhev.androidtest.core.utils.isDebugBuild
 import ru.sergeyabadzhev.androidtest.data.sources.network.ApiEndpoint
 
-class NetworkClientImpl {
+class NetworkClientImpl: NetworkClient {
 
     @PublishedApi internal val client = HttpClient {
         install(ContentNegotiation) {
@@ -28,9 +29,12 @@ class NetworkClientImpl {
         }
     }
 
-    suspend inline fun <reified T> request(endpoint: ApiEndpoint): T {
+    override suspend fun <T : Any> request(
+        endpoint: ApiEndpoint,
+        typeInfo: TypeInfo
+    ): T {
         return try {
-            client.get(endpoint.url).body()
+            client.get(endpoint.url).body(typeInfo)
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
@@ -38,26 +42,13 @@ class NetworkClientImpl {
         }
     }
 
-//    override suspend fun <T : Any> request(
-//        endpoint: ApiEndpoint,
-//        clazz: KClass<T>
-//    ): T {
-//        return try {
-//            client.get(endpoint.url).body(TypeInfo(clazz))
-//        } catch (e: CancellationException) {
-//            throw e
-//        } catch (e: Exception) {
-//            throw mapException(e)
-//        }
-//    }
-
     @PublishedApi internal fun mapException(e: Exception): NetworkError = when {
         e is ConnectTimeoutException || e is SocketTimeoutException -> NetworkError.Timeout()
         e.isNoInternetException() -> NetworkError.NoInternetConnection()
         else -> NetworkError.Unknown(e)
     }
 
-    internal fun close() {
+    override fun close() {
         client.close()
     }
 }
